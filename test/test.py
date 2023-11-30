@@ -1,0 +1,26 @@
+print("READY")
+isblack=input().lower()=="black"
+
+if isblack:
+	print("MOVE(1,2)")
+	input()
+	print("MOVE(2,2)")
+	input()
+	print("MOVE(3,2)")
+	input()
+	print("MOVE(4,2)")
+	input()
+	print("MOVE(5,2)")
+	input()
+else:
+	input()
+	print("MOVE(1,3)")
+	input()
+	print("MOVE(2,3)")
+	input()
+	print("MOVE(3,3)")
+	input()
+	print("MOVE(4,3)")
+	input()
+	print("MOVE(5,3)")
+	input()
