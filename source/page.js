@@ -9,6 +9,11 @@ const STATE = {
 	END: 5
 }
 
+function scrollToBottom(div) {
+	console.log(div.scrollTop, div.scrollHeight)
+	div.scrollTop = div.scrollHeight;
+}
+
 function getCellElement(row, col) {
 	return document.getElementById(`cs${row}_${col}`);
 }
@@ -49,6 +54,7 @@ function boardMakeMove(row, col, player) {
 	if (player) recordtbody.innerHTML += `<tr><td>${++movecount}</td><td>${movestr}</td><td></td></tr>`;
 	else recordtbody.lastElementChild.lastElementChild.innerHTML = movestr;
 	cell.innerHTML = movecount;//`<span style="text-align:center;">${movecount + 1}</span>`;
+	scrollToBottom(document.querySelector("#recordtable-wrapper"));
 
 	document.getElementById("info-state").innerHTML = player ? "White's Turn" : "Black's Turn";
 }
