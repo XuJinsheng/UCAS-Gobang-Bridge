@@ -63,14 +63,17 @@ function boardMakeMove(row, col, player) {
 }
 
 
-function gameWin(player, reason) {
+function gameWin(reason) {
 	boardSetClickable(false);
 	document.getElementById("info-state").innerHTML = reason;
 }
-function setPlayerInfo(blackplayer, whiteplayer) {
+function refreshPlayerInfo(result) {
+	let blackplayer = result[0], whiteplayer = result[1];
 	document.getElementById("info-black").innerText = blackplayer;
 	document.getElementById("info-white").innerText = whiteplayer;
+	setTimeout(() => pywebview.api.getPlayerInfo().then(refreshPlayerInfo), 500);
 }
+setTimeout(() => pywebview.api.getPlayerInfo().then(refreshPlayerInfo), 500);
 
 function sendBoardUserClick(row, col) {
 	pywebview.api.manualMove(row, col);

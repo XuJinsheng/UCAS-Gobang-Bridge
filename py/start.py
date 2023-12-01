@@ -19,6 +19,8 @@ class Api:
     def manualMove(self, row: int, col: int):
         game.dispatchManualMove(row, col)
 
+    def getPlayerInfo(self) -> typing.Tuple[str, str]:
+        return game.getInfo()
 
 def tojsbool(b: bool):
     return "true" if b else "false"
@@ -47,10 +49,6 @@ def boardSetClickable(manualable: bool):
 def boardMakeMove(row, col, player):
     window.evaluate_js(f"boardMakeMove({row},{col},{tojsbool(player)})")
 
-
-def updateInfo():
-    black, white = game.getInfo()
-    window.evaluate_js(f"setPlayerInfo(`{black}`,`{white}`)")
 
 
 window = webview.create_window(
@@ -81,7 +79,6 @@ else:
 
 
 def start():
-    updateInfo()
     game.start()
     window.evaluate_js("initialized()")
 

@@ -123,7 +123,12 @@ class StdioPlayer:
         )
 
     def getInfo(self):
-        return f"Cmdline:\n{self.cmd}\nPID:{self.process.pid}"
+        retcode=self.process.poll()
+        if retcode!=None:
+            retcode= f"ExitCode:{retcode}\n"
+        else :
+            retcode="\n"
+        return f"PID:{self.process.pid}{retcode}Cmdline:\n{self.cmd}"
 
     def writeStdin(self, data: bytes):
         self.process.stdin.write(data)
