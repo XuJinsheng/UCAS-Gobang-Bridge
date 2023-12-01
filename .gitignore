@@ -6,3 +6,5 @@ build
 *.pdf
 *.txt
 __pycache__/
+*.spec
+*.obj
