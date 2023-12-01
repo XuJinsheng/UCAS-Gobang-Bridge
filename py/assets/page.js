@@ -59,13 +59,13 @@ function boardMakeMove(row, col, player) {
 	let rtw = document.querySelector("#recordtable-wrapper");
 	rtw.scrollTop = rtw.scrollHeight;
 
-	document.getElementById("info-state").innerHTML = player ? "White's Turn" : "Black's Turn";
+	document.getElementById("info-state").innerText = player ? "White's Turn" : "Black's Turn";
 }
 
 
 function gameWin(reason) {
 	boardSetClickable(false);
-	document.getElementById("info-state").innerHTML = reason;
+	document.getElementById("info-state").innerText = reason;
 }
 function refreshPlayerInfo(result) {
 	let blackplayer = result[0], whiteplayer = result[1];
