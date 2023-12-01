@@ -17,7 +17,6 @@ function chesscellclicked(div, row, col) {
 	if (!enableBoardClick)
 		return;
 	if (div.classList.contains("black") || div.classList.contains("white")) {
-		window.alert("这里已经有棋子了！");
 		return;
 	}
 	document.querySelector("#mannualcoordinateinput").value = "";
@@ -26,8 +25,16 @@ function chesscellclicked(div, row, col) {
 function coordinateclicked() {
 	let str = document.querySelector("#mannualcoordinateinput").value;
 	let m = /(\d{1,2}),(\d{1,2})/i.exec(str);
-	if (m) chesscellclicked(getCellElement(parseInt(m[1]), parseInt(m[2])), parseInt(m[1]), parseInt(m[2]));
-	else window.alert("无效输入");
+	if (m) {
+		let row = parseInt(m[1]), col = parseInt(m[2]);
+		let div = getCellElement(row, col);
+		if (div.classList.contains("black") || div.classList.contains("white"))
+			window.alert("这里已经有棋子了！");
+		else chesscellclicked(div, row, col);
+	} else {
+		window.alert("无效输入");
+	}
+
 }
 function boardSetClickable(clickable) {
 	enableBoardClick = clickable;
@@ -58,7 +65,6 @@ function boardMakeMove(row, col, player) {
 
 function gameWin(player, reason) {
 	boardSetClickable(false);
-	let a=`aaaaa\n`
 	document.getElementById("info-state").innerHTML = reason;
 }
 function setPlayerInfo(blackplayer, whiteplayer) {

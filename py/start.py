@@ -37,7 +37,7 @@ def gameWin(player, wincode):
         case 4:
             reason += "超时"
 
-    window.evaluate_js(f'gameWin("{reason}")')
+    window.evaluate_js(f'gameWin(`{reason}`)')
 
 
 def boardSetClickable(manualable: bool):
@@ -50,8 +50,6 @@ def boardMakeMove(row, col, player):
 
 def updateInfo():
     black, white = game.getInfo()
-    """ black=black.replace("\n","<br>")
-    white=white.replace("\n","<br>") """
     window.evaluate_js(f"setPlayerInfo(`{black}`,`{white}`)")
 
 
