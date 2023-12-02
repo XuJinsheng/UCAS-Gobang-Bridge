@@ -6,12 +6,92 @@ import re
 import asyncio
 import threading
 
+# 用于检查禁手和胜利
+class Checker:
+	def __init__(self, board, recent_play, player):
+		# recent_play: 最近落子位置
+		# player: 落子玩家
+		self.board = board
+		self.recent_play = recent_play
+		self.player = player
+		self.mv_row = [1, 0, 1, 1]
+		self.mv_col = [0, 1, 1,-1]
 
+	def __maxStep(self, pos, mv_r, mv_c):
+		# pos : (row_num, col_num)
+		dr = 15
+		dc = 15
+		if mv_r != 0:
+			dr = 15 - pos[0] if mv_r == 1 else pos[0] - 1
+		if mv_c != 0:
+			dc = 15 - pos[1] if mv_c == 1 else pos[1] - 1
+		return min(dr, dc)
+	
+	def __lineDetect(self, pos, dir):
+		# 返回值同__dirSearch，但考虑了两个方向
+		res1 = self.__dirSearch(pos, self.mv_row[dir], self.mv_col[dir])
+		res2 = self.__dirSearch(pos, -self.mv_row[dir], -self.mv_col[dir])
+		res = (res1[0] + res2[0], res1[1] | res2[1], res1[2] | res2[2])
+		return res
+	
+	def __dirSearch(self, pos, mv_r, mv_c):
+		# 返回值(己方连子个数, 是否有遮挡, 涉及的棋子位置)
+		line = set() # 最快的方式是使用zobrist hash算法计算棋子的hash值，但由于需要比较的次数不多，直接使用自带的set即可
+		d = self.__maxStep(pos, mv_r, mv_c)
+		for i in range(1, d + 1):
+			if self.board[pos[0] + i * mv_r][pos[1] + i * mv_c] != self.player:
+				return (i - 1, 1, line) if self.board[pos[0] + i * mv_r][pos[1] + i * mv_c] == -self.player else (i - 1, 0, line)
+			line.add((pos[0] + i * mv_r, pos[1] + i * mv_c))
+		return (d, 1, line)
+	
+	@staticmethod
+	def __countWithoutDuplication(lst):
+		newLst = []
+		for elem in lst:
+			if elem not in newLst:
+				newLst.append(elem)
+		return len(newLst)
+	
+	def checkThreeFour(self):
+		three = []
+		four = []
+		for dir in range(4):
+			for p in [-1, 1]:
+				mv_r = p * self.mv_row[dir]
+				mv_c = p * self.mv_col[dir]
+				d = self.__maxStep(self.recent_play, mv_r, mv_c)
+				for i in range(1, d + 1):
+					if self.board[self.recent_play[0] + i * mv_r][self.recent_play[1] + i * mv_c] == 0:
+						res = self.__lineDetect((self.recent_play[0] + i * mv_r, self.recent_play[1] + i * mv_c), dir)
+						if res[0] == 3 and res[1] == 0:
+							three.append(res[2])
+						elif res[0] == 4:
+							four.append(res[2])
+						break
+		threeCnt = self.__countWithoutDuplication(three)
+		fourCnt = self.__countWithoutDuplication(four)
+		if threeCnt >= 2 or fourCnt >= 2:
+			return True
+		return False
+	
+	def checkFive(self):
+		# 返回值：2->长连, 1->连5, 0->无
+		maxl = 0
+		for dir in range(4):
+			res = self.__lineDetect(self.recent_play, dir)
+			if res[0] > 4:
+				return 2
+			maxl = max(maxl, res[0])
+		if maxl == 4:
+			return 1
+		return 0
+		
 class Game:
 	def __init__(self):
 		self.board = [
 			[0 for i in range(16)] for j in range(16)
 		]  # board: 2d array[row][col] 15*15(1-15), 0: empty, 1: black, -1: white
+		# 为什么要用1~15的下标啊？？？
 		self.black = None
 		self.white = None
 	def __del__(self):
@@ -23,6 +103,11 @@ class Game:
 	onGameWin = None  # onGameWin(player:bool, wincode:int)
 	onSetManualable = None  # onSetManualable(bool)
 
+	@staticmethod
+	def __cvtPlayer(player):
+		# 用于进行player(1/0)与棋盘标记(1/-1)的转换
+		return 1 if player else -1
+	
 	def createManualPlayer(self, player):
 		assert player == True and not self.black or player == False and not self.white
 		if player:
@@ -69,21 +154,28 @@ class Game:
 			self.gameWin(not player, 3)
 			return
 		self.onMove(row, col, player)
-		self.board[row][col] = 1 if player else -1
+		self.board[row][col] = self.__cvtPlayer(player)
 		if self.checkWin(row, col, player):
 			self.gameWin(player, 1)
 			return
-		if self.turn == True and self.checkForbidden(row, col):
+		if self.turn == True and self.checkForbidden(row, col, player):
 			self.gameWin(not player, 2)
 			return
 		self.turn = not self.turn
 		(self.black if self.turn else self.white).enemyMove(row, col)
 
-	def checkForbidden(self, row, col):
-		pass
+	def checkForbidden(self, row, col, player):
+		checker = Checker(self.board, (row, col), self.__cvtPlayer(player))
+		if checker.checkFive() == 2:
+			return True
+		return checker.checkThreeFour()
 
 	def checkWin(self, row, col, player):
-		pass
+		checker = Checker(self.board, (row, col), self.__cvtPlayer(player))
+		if player == 1:
+			return checker.checkFive() == 1
+		else:
+			return checker.checkFive() >= 1
 
 	def log(self, player, row, col):
 		pass
