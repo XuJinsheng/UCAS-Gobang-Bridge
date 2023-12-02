@@ -32,14 +32,12 @@ class Checker:
 		res1 = self.__dirSearch(pos, self.mv_row[dir], self.mv_col[dir])
 		res2 = self.__dirSearch(pos, -self.mv_row[dir], -self.mv_col[dir])
 		res = (res1[0] + res2[0], res1[1] | res2[1], res1[2] | res2[2])
-		# print(pos, res)
 		return res
 	
 	def __dirSearch(self, pos, mv_r, mv_c):
 		# 返回值(己方连子个数, 是否有遮挡, 涉及的棋子位置)
 		line = set() # 最快的方式是使用zobrist hash算法计算棋子的hash值，但由于需要比较的次数不多，直接使用自带的set即可
 		d = self.__maxStep(pos, mv_r, mv_c)
-		print(pos, d)
 		for i in range(1, d + 1):
 			if self.board[pos[0] + i * mv_r][pos[1] + i * mv_c] != self.player:
 				return (i - 1, 1, line) if self.board[pos[0] + i * mv_r][pos[1] + i * mv_c] == -self.player else (i - 1, 0, line)
@@ -75,6 +73,18 @@ class Checker:
 		if threeCnt >= 2 or fourCnt >= 2:
 			return True
 		return False
+	
+	def checkFive(self):
+		# 返回值：2->长连, 1->连5, 0->无
+		maxl = 0
+		for dir in range(4):
+			res = self.__lineDetect(self.recent_play, dir)
+			if res[0] > 4:
+				return 2
+			maxl = max(maxl, res[0])
+		if maxl == 4:
+			return 1
+		return 0
 		
 class Game:
 	def __init__(self):
@@ -156,10 +166,16 @@ class Game:
 
 	def checkForbidden(self, row, col, player):
 		checker = Checker(self.board, (row, col), self.__cvtPlayer(player))
+		if checker.checkFive() == 2:
+			return True
 		return checker.checkThreeFour()
 
 	def checkWin(self, row, col, player):
-		pass
+		checker = Checker(self.board, (row, col), self.__cvtPlayer(player))
+		if player == 1:
+			return checker.checkFive() == 1
+		else:
+			return checker.checkFive() >= 1
 
 	def log(self, player, row, col):
 		pass
