@@ -79,8 +79,31 @@ function sendBoardUserClick(row, col) {
 	pywebview.api.manualMove(row, col);
 }
 
-function initialized() {
+function initializingState(initialized) {
 	let div = document.getElementById("info-state");
-	if (div.innerText == "Initializing")
-		div.innerText = "Black's Turn";
+	if (initialized) {
+		if (div.innerText == "Initializing")
+			div.innerText = "Black's Turn";
+	} else {
+		div.innerText = "Initializing";
+	}
 }
+function restartclicked(){
+	location.reload();
+	pywebview.api.restartGame();
+}
+window.addEventListener("pywebviewready", function () {
+	pywebview.api.getForbiddenRule().then(function (frule) {
+		let div = document.getElementById("info-forbidden");
+		let frstr = "无禁手";
+		switch (frule) {
+			case 1:
+				frstr = "wcg班";
+				break;
+			case 2:
+				frstr = "ylx班";
+				break;
+		}
+		div.innerText = frstr;
+	})
+});
