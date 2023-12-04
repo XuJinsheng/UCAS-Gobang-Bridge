@@ -244,7 +244,7 @@ class StdioPlayer:
 			stdin=subprocess.PIPE,
 			stdout=subprocess.PIPE,
 			stderr=subprocess.PIPE,
-			shell=True,
+			shell=False,
 		)
 
 	def __del__(self):
