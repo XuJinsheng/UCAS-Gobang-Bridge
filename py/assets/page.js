@@ -88,6 +88,17 @@ function initializingState(initialized) {
 		div.innerText = "Initializing";
 	}
 }
+
+function chooseExeClicked(player){
+	pywebview.api.chooseExe(player).then(function(succeed) {
+		if(succeed)restartclicked();
+	})
+}
+function chooseManualClicked(player){
+	pywebview.api.chooseManual(player).then(function() {
+		restartclicked();
+	})
+}
 function restartclicked(){
 	location.reload();
 	pywebview.api.restartGame();

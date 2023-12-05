@@ -21,7 +21,7 @@ class Api:
 		game.dispatchManualMove(row, col)
 
 	def getPlayerInfo(self) -> typing.Tuple[str, str]:
-		return game.getInfo()
+		return game.getInfo() if game else ("", "")
 	
 	def restartGame(self):
 		global game
@@ -30,6 +30,23 @@ class Api:
 
 	def getForbiddenRule(self):
 		return args.forbidden
+	
+	def chooseManual(self,player: bool):
+		if player:
+			args.black=None
+		else:
+			args.white=None
+		return
+
+	def chooseExe(self,player: bool)->bool:
+		file=window.create_file_dialog(webview.OPEN_DIALOG,allow_multiple=False,file_types=('Executable files (*.*)',))
+		if file:
+			if player:
+				args.black=file[0]
+			else:
+				args.white=file[0]
+			return True
+		return False
 
 def tojsbool(b: bool):
 	return "true" if b else "false"
@@ -92,8 +109,7 @@ def start():
 		game.createManualPlayer(False)
 	game.start()
 
-	window.evaluate_js("initialized()")
-
+	window.evaluate_js(f"initializingState({tojsbool(True)})") 
 
 webview.start(start, debug=False)
 del game

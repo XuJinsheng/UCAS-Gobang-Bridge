@@ -160,7 +160,9 @@ class Game:
 		self.black.start()
 
 	def getInfo(self) -> typing.Tuple[str, str]:
-		return (self.black.getInfo(), self.white.getInfo())
+		if self.black and self.white:
+			return (self.black.getInfo(), self.white.getInfo())
+		return ("", "")
 
 	def gameWin(self, player, wincode):  # wincode: 1: 连成五个，2：禁手，3：下在非空位置，4：平局, 5: 超时
 		if self.onGameWin:
