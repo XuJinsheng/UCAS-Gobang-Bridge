@@ -89,14 +89,9 @@ function initializingState(initialized) {
 	}
 }
 
-function chooseExeClicked(player) {
-	pywebview.api.chooseExe(player).then(function (succeed) {
+function chooseExeClicked(player, type) {
+	pywebview.api.chooseExe(player, type).then(function (succeed) {
 		if (succeed) restartclicked();
-	})
-}
-function chooseManualClicked(player) {
-	pywebview.api.chooseManual(player).then(function () {
-		restartclicked();
 	})
 }
 function restartclicked() {

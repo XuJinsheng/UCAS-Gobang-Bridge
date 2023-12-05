@@ -44,7 +44,18 @@ class Api:
             args.white = None
         return
 
-    def chooseExe(self, player: bool) -> bool:
+    def chooseExe(self, player: bool, type: bool) -> bool:
+        if type == False:
+            if window.create_confirmation_dialog(
+                "Confirm Switch",
+                f"Switch {'black' if player else 'white'} to Manual mode?",
+            ):
+                if player:
+                    args.black = None
+                else:
+                    args.white = None
+                return True
+            return False
         file = window.create_file_dialog(
             webview.OPEN_DIALOG,
             allow_multiple=False,
