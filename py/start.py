@@ -39,6 +39,11 @@ class Api:
     def getForbiddenRule(self):
         return args.forbidden
 
+    def setForbiddenRule(self, rule: int):
+        args.forbidden = rule
+        if game:
+            game.forbidden = rule
+        
     def chooseExe(self, player: bool, type: bool) -> bool:
         if type == False:
             if window.create_confirmation_dialog(

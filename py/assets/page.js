@@ -81,21 +81,18 @@ function initializingState(initialized) {
 		div.innerText = "Initializing";
 	}
 }
+const forbiddenRules = ["无禁手", "wcg班", "ylx班"]
 window.addEventListener("pywebviewready", function () {
 	pywebview.api.getForbiddenRule().then(function (frule) {
 		let div = document.getElementById("info-forbidden");
-		let frstr = "无禁手";
-		switch (frule) {
-			case 1:
-				frstr = "wcg班";
-				break;
-			case 2:
-				frstr = "ylx班";
-				break;
-		}
-		div.innerText = frstr;
+		div.innerText = forbiddenRules[frule];
+		document.querySelector("#info-forbidden").selectedIndex = frule;
 	})
 });
+function forbiddenSelected() {
+	let rule = document.querySelector("#info-forbidden").selectedIndex;
+	pywebview.api.setForbiddenRule(rule);
+}
 
 function refreshPlayerInfo(result) {
 	document.getElementById("info-black").innerText = result[0];

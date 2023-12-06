@@ -34,26 +34,23 @@
 			box-shadow: 0 0 5px #000;
 		}
 
-		/* 设置标签内容的样式（并为整页内容添加 height:100% ） */
 		.tabcontent {
 			display: none;
 			padding: 100px 20px;
 			height: 100%;
 		}
 	</style>
-	<script>function openPage(pageName, elmnt) {
-			// 默认隐藏所有带有 class="tabcontent" 的元素 */
+	<script>
+		function openPage(pageName, elmnt) {
 			var i, tabcontent, tablinks;
 			tabcontent = document.getElementsByClassName("tabcontent");
 			for (i = 0; i < tabcontent.length; i++) {
 				tabcontent[i].style.display = "none";
 			}
-			// 显示具体的标签内容
 			document.getElementById(pageName).style.display = "flex";
 		}
 
-		// 用 id="defaultOpen" 获取元素并点击它
-		document.getElementById("defaultOpen").click();
+		//document.getElementById("defaultOpen").click();
 	</script>
 	<div style="width: 100%;height: 30px; background-color: #ccc;">
 		<button class="tablink" onclick="openPage('HomePage', this)" id="defaultOpen">Home</button>
@@ -92,7 +89,12 @@
 			<p style="text-align: center;">Control Panel</p>
 			<div>
 				<b>禁手规则</b>
-				<div id="info-forbidden"></div>
+				<select id="info-forbidden" name="Forbidden Rules" title="Forbidden Rules"
+					onchange="forbiddenSelected()">
+					<option value="0">无禁手</option>
+					<option value="1">wcg班</option>
+					<option value="2">ylx班</option>
+				</select>
 			</div>
 			<div>
 				<b>State</b>

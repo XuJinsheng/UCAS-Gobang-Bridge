@@ -86,7 +86,7 @@ html {
 }
 
 #ctrl-panel button[disabled],
-#mannualcoordinateinput {
+#mannualcoordinateinput[disabled] {
 	cursor: not-allowed;
 }
 
