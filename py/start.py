@@ -26,8 +26,10 @@ class Api:
     def manualMove(self, row: int, col: int):
         game.dispatchManualMove(row, col)
 
-    def getPlayerInfo(self) -> typing.Tuple[str, str]:
-        return game.getInfo() if game else ("", "")
+    def getInfo(self) -> typing.Tuple[str, str, str, str]:
+        if game:
+            return game.getPlayerInfo() + game.getIOlog()
+        return (" ", " ", "", "")
 
     def restartGame(self):
         global game
@@ -98,7 +100,7 @@ window = webview.create_window(
     "assets/index.html",
     js_api=Api(),
     width=1280,
-    height=650,
+    height=640,
     resizable=False,
     fullscreen=False,
     frameless=False,
@@ -126,5 +128,5 @@ def start():
     window.evaluate_js(f"initializingState({tojsbool(True)})")
 
 
-webview.start(start, debug=False)
+webview.start(start, debug=True)
 del game

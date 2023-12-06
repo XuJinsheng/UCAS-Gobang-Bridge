@@ -63,20 +63,13 @@ function boardMakeMove(row, col, player) {
 }
 
 
+function sendBoardUserClick(row, col) {
+	pywebview.api.manualMove(row, col);
+}
+
 function gameWin(reason) {
 	boardSetClickable(false);
 	document.getElementById("info-state").innerText = reason;
-}
-function refreshPlayerInfo(result) {
-	let blackplayer = result[0], whiteplayer = result[1];
-	document.getElementById("info-black").innerText = blackplayer;
-	document.getElementById("info-white").innerText = whiteplayer;
-	setTimeout(() => pywebview.api.getPlayerInfo().then(refreshPlayerInfo), 500);
-}
-setTimeout(() => pywebview.api.getPlayerInfo().then(refreshPlayerInfo), 500);
-
-function sendBoardUserClick(row, col) {
-	pywebview.api.manualMove(row, col);
 }
 
 function initializingState(initialized) {
@@ -87,16 +80,6 @@ function initializingState(initialized) {
 	} else {
 		div.innerText = "Initializing";
 	}
-}
-
-function chooseExeClicked(player, type) {
-	pywebview.api.chooseExe(player, type).then(function (succeed) {
-		if (succeed) restartclicked();
-	})
-}
-function restartclicked() {
-	location.reload();
-	pywebview.api.restartGame();
 }
 window.addEventListener("pywebviewready", function () {
 	pywebview.api.getForbiddenRule().then(function (frule) {
@@ -113,3 +96,23 @@ window.addEventListener("pywebviewready", function () {
 		div.innerText = frstr;
 	})
 });
+
+function refreshPlayerInfo(result) {
+	document.getElementById("info-black").innerText = result[0];
+	document.getElementById("info-white").innerText = result[1];
+	document.getElementById("BlackIO").innerHTML += result[2];
+	document.getElementById("WhiteIO").innerHTML += result[3];
+
+	setTimeout(() => pywebview.api.getInfo().then(refreshPlayerInfo), 500);
+}
+setTimeout(() => pywebview.api.getInfo().then(refreshPlayerInfo), 500);
+
+function chooseExeClicked(player, type) {
+	pywebview.api.chooseExe(player, type).then(function (succeed) {
+		if (succeed) restartclicked();
+	})
+}
+function restartclicked() {
+	location.reload();
+	pywebview.api.restartGame();
+}

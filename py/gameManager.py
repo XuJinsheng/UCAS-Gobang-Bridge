@@ -159,10 +159,21 @@ class Game:
         self.white.start()
         self.black.start()
 
-    def getInfo(self) -> typing.Tuple[str, str]:
+    def getPlayerInfo(self) -> typing.Tuple[str, str]:
         if self.black and self.white:
             return (self.black.getInfo(), self.white.getInfo())
         return ("", "")
+
+    def getIOlog(self) -> typing.Tuple[str, str]:
+        blacklog = ""
+        whitelog = ""
+        if type(self.black) == StdioPlayer:
+            blacklog = self.black.iolog_unstaged
+            self.black.iolog_unstaged = ""
+        if type(self.white) == StdioPlayer:
+            whitelog = self.white.iolog_unstaged
+            self.white.iolog_unstaged = ""
+        return (blacklog, whitelog)
 
     def gameWin(self, player, wincode):  # wincode: 1: 连成五个，2：禁手，3：下在非空位置，4：平局, 5: 超时
         if self.onGameWin:
@@ -241,6 +252,7 @@ class StdioPlayer:
         self.cmd = cmd
         self.initializing = True
         self.iolog = ""
+        self.iolog_unstaged = ""
         self.process = subprocess.Popen(
             cmd,
             stdin=subprocess.PIPE,
@@ -266,11 +278,13 @@ class StdioPlayer:
         if type(data) == bytes:
             data = data.decode()
         self.iolog += "--------------%s--------------\n" % (data)
+        self.iolog_unstaged += "--------------%s--------------\n" % (data)
 
     def readlineStdout(self) -> str:
         data = self.process.stdout.readline()
         data = data.decode()
         self.iolog += data
+        self.iolog_unstaged += data
         return data
 
     def start(self):
