@@ -37,13 +37,6 @@ class Api:
     def getForbiddenRule(self):
         return args.forbidden
 
-    def chooseManual(self, player: bool):
-        if player:
-            args.black = None
-        else:
-            args.white = None
-        return
-
     def chooseExe(self, player: bool, type: bool) -> bool:
         if type == False:
             if window.create_confirmation_dialog(
