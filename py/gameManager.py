@@ -3,9 +3,9 @@ from time import sleep
 import typing
 import os
 import re
-import asyncio
-import threading
+from concurrent.futures import ThreadPoolExecutor
 
+threadPool=ThreadPoolExecutor()
 
 # 用于检查禁手和胜利
 class Checker:
@@ -279,13 +279,13 @@ class StdioPlayer:
         self.writeStdin(b"BLACK\n" if self.player else b"WHITE\n")
         self.initializing = False
         if self.player:
-            asyncio.run(self.readMove())
+            threadPool.submit(self.readMove)
 
     def enemyMove(self, row, col):
         self.writeStdin(b"MOVE(%d,%d)\n" % (row, col))
-        asyncio.run(self.readMove())
+        threadPool.submit(self.readMove)
 
-    async def readMove(self):
+    def readMove(self):
         while True:
             s = self.readlineStdout().strip()
             m = re.match(r"MOVE.*?(\d{1,2}),(\d{1,2})", s, re.I)
