@@ -81,12 +81,13 @@ html {
 	border: 1px solid #ccc;
 	border-radius: 3px;
 	background-color: #fff;
-	cursor: not-allowed;
-}
-
-#ctrl-panel button {
 	margin-left: 5px;
 	cursor: pointer;
+}
+
+#ctrl-panel button[disabled],
+#mannualcoordinateinput {
+	cursor: not-allowed;
 }
 
 
