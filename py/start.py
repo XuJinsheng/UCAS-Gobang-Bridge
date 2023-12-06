@@ -64,6 +64,16 @@ class Api:
             return True
         return False
 
+    def saveLog(self):
+        if not game:
+            return
+        file = window.create_file_dialog(
+            webview.SAVE_DIALOG,
+            file_types=("Text files (*.txt)",),
+        )
+        if file:
+            game.saveLog(file[0])
+
 
 def tojsbool(b: bool):
     return "true" if b else "false"

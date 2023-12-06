@@ -116,3 +116,7 @@ function restartclicked() {
 	location.reload();
 	pywebview.api.restartGame();
 }
+
+function savelogclicked() {
+	pywebview.api.saveLog();
+}

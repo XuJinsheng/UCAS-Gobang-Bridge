@@ -182,7 +182,7 @@ class Game:
     def makeMove(self, row, col, player: bool):
         if player != self.turn:
             return
-        self.log(player, row, col)
+        self.logMove(player, row, col)
         self.stepcount += 1
         if self.board[row, col] != 0:
             self.gameWin(not player, 3)
@@ -219,9 +219,11 @@ class Game:
         self.turn = not self.turn
         (self.black if self.turn else self.white).enemyMove(row, col)
 
-    def log(self, player, row, col):
+    def logMove(self, player, row, col):
         pass
 
+    def saveLog(self, filename):
+        pass
 
 class ManualPlayer:
     def __init__(self, game, player):
