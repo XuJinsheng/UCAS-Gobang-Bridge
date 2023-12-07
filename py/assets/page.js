@@ -98,7 +98,7 @@ function refreshPlayerInfo(result) {
 	document.getElementById("BlackIOText").innerHTML += result[2];
 	document.getElementById("WhiteIOText").innerHTML += result[3];
 
-	setTimeout(() => pywebview.api.getInfo().then(refreshPlayerInfo), 5000);
+	setTimeout(() => pywebview.api.getInfo().then(refreshPlayerInfo), 200);
 }
 setTimeout(() => pywebview.api.getInfo().then(refreshPlayerInfo), 500);
 
