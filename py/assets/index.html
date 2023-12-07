@@ -12,7 +12,7 @@
 <body style="height:fit-content;">
 	<style>
 		.tablink {
-			background-color: #ccc;
+			background-color: inherit;
 			float: left;
 			border: none;
 			outline: none;
@@ -21,7 +21,6 @@
 			height: 30px;
 			text-align: center;
 			line-height: 30px;
-			cursor: pointer;
 			border-radius: 10px 10px 0 0;
 			user-select: none;
 			margin-right: 5px;
@@ -40,19 +39,21 @@
 		}
 	</style>
 	<script>
-		function openPage(pageName, elmnt) {
-			var i, tabcontent, tablinks;
-			tabcontent = document.getElementsByClassName("tabcontent");
-			for (i = 0; i < tabcontent.length; i++) {
+		function openPage(pageName, pagelink) {
+			let tabcontent = document.getElementsByClassName("tabcontent");
+			for (let i = 0; i < tabcontent.length; i++) {
 				tabcontent[i].style.display = "none";
 			}
 			document.getElementById(pageName).style.display = "flex";
+			let tablink = document.getElementsByClassName("tablink");
+			for (let i = 0; i < tablink.length; i++) {
+				tablink[i].style.backgroundColor = "inherit";
+			}
+			pagelink.style.backgroundColor = "#fff";
 		}
-
-		//document.getElementById("defaultOpen").click();
 	</script>
 	<div style="width: 100%;height: 30px; background-color: #ccc;">
-		<button class="tablink" onclick="openPage('HomePage', this)" id="defaultOpen">Home</button>
+		<button class="tablink" onclick="openPage('HomePage', this)" style="background-color: #fff;">Home</button>
 		<button class="tablink" onclick="openPage('BlackIO', this)">Black IO</button>
 		<button class="tablink" onclick="openPage('WhiteIO', this)">White IO</button>
 	</div>
