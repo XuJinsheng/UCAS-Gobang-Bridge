@@ -73,16 +73,36 @@
 				</tbody>
 			</table>
 		</div>
-		<div class="chessboard">
+
+		<div class="chessboardWrapper">
 			<script>
-				let html = '';
-				for (let i = 1; i <= 15; i++) {
-					for (let j = 1; j <= 15; j++) {
-						html += `<div class="chess-cell" id="cs${i}_${j}" onclick="chesscellclicked(this,${i},${j})"></div>`;
+				const row = 15;
+				const col = 15;
+				let origHTML = document.querySelector(".chessboardWrapper")[0].innerHTML;
+				let addHTML = "";
+				addHTML += "<table>"
+				for (let i = 0; i <= row; i++) {
+					addHTML += "<tr>";
+					for (let j = 0; j <= col; j++) {
+						addHTML += `<td> + </td>`;
 					}
+					addHTML += "</tr>";
 				}
-				document.write(html);
+				addHTML += "</table>";
+				document.write(addHTML + origHTML);
 			</script>
+
+			<div class="chessboard">
+				<script>
+					let html = document.querySelector(".chessboard")[0].innerHTML;
+					for (let i = 1; i <= row; i++) {
+						for (let j = 1; j <= col; j++) {
+							html += `<div class="chess-cell" id="cs${i}_${j}" onclick="chesscellclicked(this,${i},${j})"></div>`;
+						}
+					}
+					document.write(html);
+				</script>
+			</div>
 		</div>
 
 		<div id="ctrl-panel" style="width: 360px;">

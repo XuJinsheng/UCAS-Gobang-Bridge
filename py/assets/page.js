@@ -84,8 +84,6 @@ function initializingState(initialized) {
 const forbiddenRules = ["无禁手", "wcg班", "ylx班"]
 window.addEventListener("pywebviewready", function () {
 	pywebview.api.getForbiddenRule().then(function (frule) {
-		let div = document.getElementById("info-forbidden");
-		div.innerText = forbiddenRules[frule];
 		document.querySelector("#info-forbidden").selectedIndex = frule;
 	})
 });
@@ -95,6 +93,7 @@ function forbiddenSelected() {
 }
 
 function refreshPlayerInfo(result) {
+	console.log(result);
 	document.getElementById("info-black").innerText = result[0];
 	document.getElementById("info-white").innerText = result[1];
 	document.getElementById("BlackIO").innerHTML += result[2];

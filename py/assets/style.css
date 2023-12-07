@@ -1,3 +1,9 @@
+* {
+	--cell-size: 36px;
+	--col-num: 15;
+	--row-num: 15;
+}
+
 body,
 html {
 	height: 100%;
@@ -57,7 +63,7 @@ html {
 	margin-bottom: 18px;
 }
 
-#ctrl-panel div b {
+#ctrl-panel div b, #ctrl-panel b {
 	font-size: 16px;
 	padding-left: 5px;
 }
@@ -81,8 +87,10 @@ html {
 	border: 1px solid #ccc;
 	border-radius: 3px;
 	background-color: #fff;
-	margin-left: 5px;
+	margin-left: 8px;
 	cursor: pointer;
+	margin-top: 5px;
+	margin-bottom: 5px;
 }
 
 #ctrl-panel button[disabled],
@@ -90,12 +98,50 @@ html {
 	cursor: not-allowed;
 }
 
+div.chessboardWrapper {
+	width: calc(var(--cell-size) * (var(--col-num) + 1) + 2px);
+	height: calc(var(--cell-size) * (var(--row-num) + 1));
+	/* +1: add space for indices */
+	position: relative;
+	top:calc(-var(--cell-size) - 1px);
+	left: calc(-var(--cell-size) - 1px);
+	z-index: 9;
+	padding: 0;
+	margin: 20px 50px 20px 30px;
+	background-color: aqua;
+}
+
+div.chessboardWrapper>table {
+	margin: 0;
+	padding: 0;
+	border-collapse: collapse;
+	border-spacing: 0;
+	border: none;
+	width: calc(--var(--cell-size) * (var(--col-num) + 1));
+	height: calc(--var(--cell-size) * (var(--row-num) + 1));
+}
+
+div.chessboardWrapper>table>td {
+	margin: 0;
+	padding: 0;
+	border-collapse: collapse;
+	border-spacing: 0;
+	border: none;
+	width: --var(--cell-size);
+	height: --var(--cell-size);
+	text-align: center;
+	vertical-align: middle;
+	line-height: --var(--cell-size);
+}
+
 
 div.chessboard {
+	z-index: 10;
 	position: relative;
-	margin: 20px 50px 20px 30px;
-	width: 542px;
-	height: 540px;
+	/* margin: 20px 50px 20px 30px; */
+	margin-left: var(--cell-size);
+	width: calc(var(--cell-size) * var(--col-num) + 2px);
+	height: calc(var(--cell-size) * var(--row-num));
 	background: url("data:image/png;base64,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") no-repeat 14px 14px rgb(250, 250, 250);
 	overflow: hidden;
 	-webkit-box-shadow: 2px 2px 8px #888;
@@ -105,8 +151,8 @@ div.chessboard {
 
 div.chessboard div {
 	float: left;
-	width: 36px;
-	height: 36px;
+	width: var(--cell-size);
+	height: var(--cell-size);
 	border-top: 0px solid #ccc;
 	border-left: 0px solid #ccc;
 	border-right: 0;
@@ -116,7 +162,34 @@ div.chessboard div {
 	justify-content: center;
 }
 
+select {
+	padding: 8px 16px;
+	border: none;
+	border-radius: 4px;
+	background-color: #f2f2f2;
+	color: #333;
+	font-size: 14px;
+	font-family: Arial, sans-serif;
+}
+  
+select:hover {
+	background-color: #e8e8e8;
+}
+  
+select:focus {
+	outline: none;
+	box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+}
 
+select option {
+	padding: 8px;
+	background-color: #f2f2f2;
+	color: #333;
+}
+  
+select option:checked {
+	background-color: #ccc;
+}
 
 .chessboardclickable div:hover {
 	cursor: pointer;
