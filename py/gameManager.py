@@ -3,9 +3,11 @@ from time import sleep
 import typing
 import os
 import re
+import json
 from concurrent.futures import ThreadPoolExecutor
 
-threadPool=ThreadPoolExecutor()
+threadPool = ThreadPoolExecutor()
+
 
 # 用于检查禁手和胜利
 class Checker:
@@ -118,15 +120,17 @@ class Game:
         self.forbidden = forbidden
         self.stepcount = 0
 
+        self.moveLog = []
+        self.winReason = "Still Playing"
+        self.onMove = None  # onMove(row, col, player)
+        self.onGameWin = None  # onGameWin(player:bool, wincode:int)
+        self.onSetManualable = None  # onSetManualable(bool)
+
     def __del__(self):
         if self.black:
             del self.black
         if self.white:
             del self.white
-
-    onMove = None  # onMove(row, col, player)
-    onGameWin = None  # onGameWin(player:bool, wincode:int)
-    onSetManualable = None  # onSetManualable(bool)
 
     def createManualPlayer(self, player):
         assert player == True and not self.black or player == False and not self.white
@@ -176,14 +180,23 @@ class Game:
         return (blacklog, whitelog)
 
     def gameWin(self, player, wincode):  # wincode: 1: 连成五个，2：禁手，3：下在非空位置，4：平局, 5: 超时
+        REASON = [
+            "Still Playing",
+            "Five in a row",
+            "Forbidden",
+            "Non-empty position",
+            "Draw",
+            "Timeout",
+        ]
+        self.winReason = REASON[wincode]
         if self.onGameWin:
             self.onGameWin(player, wincode)
 
     def makeMove(self, row, col, player: bool):
         if player != self.turn:
             return
-        self.logMove(player, row, col)
         self.stepcount += 1
+        self.logMove(player, row, col)
         if self.board[row, col] != 0:
             self.gameWin(not player, 3)
             return
@@ -220,10 +233,26 @@ class Game:
         (self.black if self.turn else self.white).enemyMove(row, col)
 
     def logMove(self, player, row, col):
-        pass
+        self.moveLog.append((player, row, col))
 
-    def saveLog(self, filename):
-        pass
+    def saveLog(self, filepath, append=False):
+        log = {
+            "forbidden": self.forbidden,
+            "wincode": self.winReason,
+            "black": self.black.getInfoDict(),
+            "white": self.white.getInfoDict(),
+            "moveLog": self.moveLog,
+        }
+        if append:
+            with open(filepath, "r+") as f:
+                origin = json.load(f)
+                origin.append(log)
+                f.seek(0)
+                json.dump(origin, f)
+        else:
+            with open(filepath, "w") as f:
+                json.dump([log], f)
+
 
 class ManualPlayer:
     def __init__(self, game, player):
@@ -244,6 +273,9 @@ class ManualPlayer:
         self.game.makeMove(row, col, self.player)
 
     def getInfo(self):
+        return "ManualPlayer"
+
+    def getInfoDict(self):
         return "ManualPlayer"
 
 
@@ -273,6 +305,13 @@ class StdioPlayer:
         else:
             retcode = ""
         return f"PID:{self.process.pid}\n{retcode}Cmdline:\n{self.cmd}"
+
+    def getInfoDict(self):
+        return {
+            "PID": self.process.pid,
+            "CmdLine": self.cmd,
+            "ExitCode": self.process.poll(),
+        }
 
     def writeStdin(self, data: bytes):
         self.process.stdin.write(data)

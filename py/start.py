@@ -3,7 +3,7 @@ import argparse
 import gameManager
 import typing
 import sys
-import asyncio
+import os
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-auto", "--auto", action="store_true", help="auto start")
@@ -43,7 +43,7 @@ class Api:
         args.forbidden = rule
         if game:
             game.forbidden = rule
-        
+
     def chooseExe(self, player: bool, type: bool) -> bool:
         if type == False:
             if window.create_confirmation_dialog(
@@ -56,10 +56,11 @@ class Api:
                     args.white = None
                 return True
             return False
+        file_filter = "Executable files (*.exe)" if sys.platform.startswith('win') else "Executable files (*.*)"
         file = window.create_file_dialog(
             webview.OPEN_DIALOG,
             allow_multiple=False,
-            file_types=("Executable files (*.*)",),
+            file_types=(file_filter,),
         )
         if file:
             if player:
@@ -72,12 +73,12 @@ class Api:
     def saveLog(self):
         if not game:
             return
-        file = window.create_file_dialog(
+        filepath = window.create_file_dialog(
             webview.SAVE_DIALOG,
-            file_types=("Text files (*.txt)",),
+            file_types=("JSON files (*.json)",),
         )
-        if file:
-            game.saveLog(file[0])
+        if filepath:
+            game.saveLog(filepath, os.path.exists(filepath))
 
 
 def tojsbool(b: bool):
@@ -114,7 +115,7 @@ window = webview.create_window(
     "Gobang Bridge",
     "assets/index.html",
     js_api=Api(),
-    width=1380,
+    width=1280,
     height=640,
     resizable=False,
     fullscreen=False,
@@ -143,5 +144,5 @@ def start():
     window.evaluate_js(f"initializingState({tojsbool(True)})")
 
 
-webview.start(start, debug=True)
+webview.start(start, debug=False)
 del game
