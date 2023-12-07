@@ -93,13 +93,12 @@ function forbiddenSelected() {
 }
 
 function refreshPlayerInfo(result) {
-	console.log(result);
 	document.getElementById("info-black").innerText = result[0];
 	document.getElementById("info-white").innerText = result[1];
-	document.getElementById("BlackIO").innerHTML += result[2];
-	document.getElementById("WhiteIO").innerHTML += result[3];
+	document.getElementById("BlackIOText").innerHTML += result[2];
+	document.getElementById("WhiteIOText").innerHTML += result[3];
 
-	setTimeout(() => pywebview.api.getInfo().then(refreshPlayerInfo), 500);
+	setTimeout(() => pywebview.api.getInfo().then(refreshPlayerInfo), 5000);
 }
 setTimeout(() => pywebview.api.getInfo().then(refreshPlayerInfo), 500);
 

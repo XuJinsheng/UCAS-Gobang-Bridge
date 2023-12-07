@@ -318,8 +318,8 @@ class StdioPlayer:
         self.process.stdin.flush()
         if type(data) == bytes:
             data = data.decode()
-        self.iolog += "--------------%s--------------\n" % (data)
-        self.iolog_unstaged += "--------------%s--------------\n" % (data)
+        self.iolog += "--------------%s" % (data)
+        self.iolog_unstaged += "--------------%s" % (data)
 
     def readlineStdout(self) -> str:
         data = self.process.stdout.readline()
