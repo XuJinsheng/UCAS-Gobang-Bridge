@@ -9,6 +9,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-auto", "--auto", action="store_true", help="auto start")
 parser.add_argument("-b", "--black", help="black player")
 parser.add_argument("-w", "--white", help="white player")
+parser.add_argument("-l", "--log", help="auto log to file after game end")
 parser.add_argument(
     "-f",
     "--forbidden",
@@ -101,6 +102,8 @@ def gameWin(player, wincode):
             reason += "超时"
 
     window.evaluate_js(f"gameWin(`{reason}`)")
+    if args.log and os.path.isfile(args.log):
+        game.saveLog(args.log, os.path.exists(args.log))
 
 
 def boardSetClickable(manualable: bool):

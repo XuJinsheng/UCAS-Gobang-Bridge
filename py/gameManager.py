@@ -9,6 +9,15 @@ from concurrent.futures import ThreadPoolExecutor
 threadPool = ThreadPoolExecutor()
 
 
+WINREASON = [
+    "Still Playing",
+    "Five in a row",
+    "Forbidden",
+    "Non-empty position",
+    "Draw",
+    "Timeout",
+]
+FORBIDDENRULE=["None","WCG","YLX"]
 # 用于检查禁手和胜利
 class Checker:
     def __init__(self):
@@ -121,7 +130,8 @@ class Game:
         self.stepcount = 0
 
         self.moveLog = []
-        self.winReason = "Still Playing"
+        self.winCode = 0
+        self.winPlayer = None
         self.onMove = None  # onMove(row, col, player)
         self.onGameWin = None  # onGameWin(player:bool, wincode:int)
         self.onSetManualable = None  # onSetManualable(bool)
@@ -180,15 +190,8 @@ class Game:
         return (blacklog, whitelog)
 
     def gameWin(self, player, wincode):  # wincode: 1: 连成五个，2：禁手，3：下在非空位置，4：平局, 5: 超时
-        REASON = [
-            "Still Playing",
-            "Five in a row",
-            "Forbidden",
-            "Non-empty position",
-            "Draw",
-            "Timeout",
-        ]
-        self.winReason = REASON[wincode]
+        self.winPlayer = player
+        self.winCode = wincode
         if self.onGameWin:
             self.onGameWin(player, wincode)
 
@@ -237,11 +240,12 @@ class Game:
 
     def saveLog(self, filepath, append=False):
         log = {
-            "forbidden": self.forbidden,
-            "wincode": self.winReason,
-            "black": self.black.getInfoDict(),
-            "white": self.white.getInfoDict(),
-            "moveLog": self.moveLog,
+            "ForbiddenRule": FORBIDDENRULE[self.forbidden],
+            "WinPlayer": self.winPlayer,
+            "Wincode": WINREASON[self.winCode],
+            "Black": self.black.getInfoDict(),
+            "White": self.white.getInfoDict(),
+            "MoveLog": self.moveLog,
         }
         if append:
             with open(filepath, "r+") as f:
