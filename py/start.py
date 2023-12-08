@@ -14,7 +14,7 @@ parser.add_argument(
     "-f",
     "--forbidden",
     type=int,
-    help="Forbidden mode, 0: off, 1: wcg, 2: ylx",
+    help="Forbidden mode, 0: off, 1: on",
     default=0,
 )
 args = parser.parse_args()
@@ -57,7 +57,11 @@ class Api:
                     args.white = None
                 return True
             return False
-        file_filter = "Executable files (*.exe)" if sys.platform.startswith('win') else "Executable files (*.*)"
+        file_filter = (
+            "Executable files (*.exe)"
+            if sys.platform.startswith("win")
+            else "Executable files (*.*)"
+        )
         file = window.create_file_dialog(
             webview.OPEN_DIALOG,
             allow_multiple=False,

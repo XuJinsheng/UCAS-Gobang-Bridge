@@ -17,8 +17,9 @@ WINREASON = [
     "Draw",
     "Timeout",
 ]
-FORBIDDENRULE=["None","WCG","YLX"]
-# 用于检查禁手和胜利
+FORBIDDENRULE = ["Off", "On"]
+
+
 class Checker:
     def __init__(self):
         self.board = [
@@ -216,13 +217,6 @@ class Game:
                         self.gameWin(player, 1)
                         return
                 case 1:
-                    if self.board.checkFive() >= 1:
-                        self.gameWin(player, 1)
-                        return
-                    if self.board.checkFive() == 2 or self.board.checkThreeFour():
-                        self.gameWin(not player, 2)
-                        return
-                case 2:
                     if self.board.checkFive() == 1:
                         self.gameWin(player, 1)
                         return

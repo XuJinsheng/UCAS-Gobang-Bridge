@@ -81,7 +81,7 @@ function initializingState(initialized) {
 		div.innerText = "Initializing";
 	}
 }
-const forbiddenRules = ["无禁手", "wcg班", "ylx班"]
+
 window.addEventListener("pywebviewready", function () {
 	pywebview.api.getForbiddenRule().then(function (frule) {
 		document.querySelector("#info-forbidden").selectedIndex = frule;
