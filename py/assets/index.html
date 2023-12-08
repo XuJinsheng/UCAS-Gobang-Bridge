@@ -82,10 +82,10 @@
 						if ((i == 0 || i == 16) && (j == 0 || j == 16))
 							html += `<div></div>`;
 						else if (i == 0 || i == 16)
-							html += `<div>${j}</div>`;
+							html += `<div>${String.fromCharCode(65 + j - 1)}</div>`;
 						else if (j == 0 || j == 16)
-							html += `<div>${i}</div>`;
-						else html += `<div class="chess-cell" id="cs${i}_${j}" onclick="chesscellclicked(this,${i},${j})"></div>`;
+							html += `<div>${16 - i}</div>`;
+						else html += `<div class="chess-cell" id="cs${16 - i}_${j}" onclick="chesscellclicked(this,${16 - i},${j})"></div>`;
 					}
 				}
 				document.write(html);

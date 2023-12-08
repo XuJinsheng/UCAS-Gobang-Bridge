@@ -122,7 +122,7 @@ window = webview.create_window(
     "Gobang Bridge",
     "assets/index.html",
     js_api=Api(),
-    width=1340,
+    width=1400,
     height=800,
     resizable=False,
     fullscreen=False,
