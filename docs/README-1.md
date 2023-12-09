@@ -78,7 +78,7 @@
    ```C
    " MOVE(%d,%d)\n"
    //MOVE前有一个空格，即读入坐标的函数应写为如下格式
-scanf(" MOVE(%d,%d)",&row,&col);
+   scanf(" MOVE(%d,%d)",&row,&col);
    //其中行为row,列为col
    ```
 	对于一次交互过程：黑方机器先手，其先输出字符串
