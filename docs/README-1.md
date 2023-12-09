@@ -164,7 +164,7 @@
   ```shell
   示例 ./Gobang_Bridge.exe -b "E:\VSCODE\Gobang\test_b.exe" 
   # 黑方为机器，白方为人类
-```
+  ```
   
 - `-w`：白方玩家（不填默认为人类玩家）（填写文件路径）
 
