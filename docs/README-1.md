@@ -116,6 +116,34 @@
 
    > 原理部分（省流可跳过）：`fflush(stdout)`的作用本质为清空标准输出`stdout`的缓冲区，本程序采用标准输入输出实现白方与黑方的交互，需保证每次传入的格式为`"MOVE(%d,%d)\n"`
 
+**下为一段示例程序，输入输出规范可参考此程序**：
+
+```C
+#include <stdio.h>
+#include <string.h>
+char s[100];
+int main()
+{
+	// setbuf(stdout, NULL);
+	int row = 7, col = 7;
+	puts("READY\n");
+	fflush(stdout);
+	gets(s);
+	if (strcmp(s, "BLACK") == 0)
+		printf("MOVE(1,1)\n");
+	fflush(stdout);
+	while (1)
+	{
+		scanf(" MOVE(%d,%d)", &row, &col); // scanf的空格很重要，不然会读到换行符等
+		printf("MOVE(%d,%d)\n", row, col > 14 ? 1 : col + 1);
+		fflush(stdout);
+	}
+	return 0;
+}
+```
+
+
+
 ### 四、棋谱日志介绍
 
 - `forbidden`：禁手规则
@@ -192,4 +220,3 @@
   0:无禁手
   1:有禁手
   ```
-
