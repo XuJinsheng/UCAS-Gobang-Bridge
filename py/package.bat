@@ -1,1 +1,1 @@
-pyinstaller --noconfirm --onefile --windowed --add-data "py/assets;assets/"  "py/start.py" --icon "py/assets/icon.ico"
+pyinstaller --noconfirm --onefile --windowed --add-data "py/assets;assets/"  "py/start.py" --icon "py/assets/img/icon.ico"

@@ -25,7 +25,7 @@
     "appId": "cn.net.xjs.gobanggui",
     "copyright": "Xujinsheng",
     "productName": "Gobang Bridge",
-	"icon":"icon.png",
+	"icon":"./img/icon.png",
     "win": {
       "target": [
         "portable"
