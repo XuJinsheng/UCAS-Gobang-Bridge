@@ -51,7 +51,7 @@ function boardMakeMove(row, col, player) {
 	cell.classList.add("lastmove");
 	lastMove = [row, col];
 
-	movestr = String.fromCharCode(65 - 1 + row) + "" + (col);
+	movestr = String.fromCharCode(65 - 1 + col) + "" + (row);
 	let recordtbody = document.querySelector("#recordtable>tbody");
 	if (player) recordtbody.innerHTML += `<tr><td>${++movecount}</td><td>${movestr}</td><td></td></tr>`;
 	else recordtbody.lastElementChild.lastElementChild.innerHTML = movestr;
