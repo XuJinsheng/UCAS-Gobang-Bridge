@@ -34,7 +34,7 @@ class Api:
 
     def restartGame(self):
         global game
-        del game
+        game.close()
         start()
 
     def getForbiddenRule(self):
@@ -152,4 +152,4 @@ def start():
 
 
 webview.start(start, debug=False)
-del game
+game.close()

@@ -137,11 +137,11 @@ class Game:
         self.onGameWin = None  # onGameWin(player:bool, wincode:int)
         self.onSetManualable = None  # onSetManualable(bool)
 
-    def __del__(self):
+    def close(self):
         if self.black:
-            del self.black
+            self.black.close()
         if self.white:
-            del self.white
+            self.white.close()
 
     def createManualPlayer(self, player):
         assert player == True and not self.black or player == False and not self.white
@@ -256,7 +256,10 @@ class ManualPlayer:
     def __init__(self, game, player):
         self.game = game
         self.player = player
-
+        
+    def close(self):
+        pass
+        
     def start(self):
         if self.player:
             self.game.onSetManualable(True)
@@ -293,7 +296,7 @@ class StdioPlayer:
             shell=False,
         )
 
-    def __del__(self):
+    def close(self):
         self.process.kill()
 
     def getInfo(self):
@@ -321,7 +324,11 @@ class StdioPlayer:
 
     def readlineStdout(self) -> str:
         data = self.process.stdout.readline()
-        data = data.decode()
+        # guess encoding
+        try:
+            data = data.decode("utf-8")
+        except UnicodeDecodeError:
+            data = data.decode("gbk")
         self.iolog += data
         self.iolog_unstaged += data
         return data
