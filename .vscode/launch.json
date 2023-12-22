@@ -34,23 +34,10 @@
 			"name": "Python: pywebview",
 			"type": "python",
 			"request": "launch",
-			"program": "py/start.py",
+			"program": "src/start.py",
 			"console": "integratedTerminal",
 			"justMyCode": true,
 			"args": ["-b","\"python test/test.py\""]
-		},
-		{
-			"name": "Electron",
-			"type": "node",
-			"request": "launch",
-			"cwd": "${workspaceFolder}/source",
-			"runtimeExecutable": "${workspaceFolder}/source/node_modules/.bin/electron",
-			"windows": {
-				"runtimeExecutable": "${workspaceFolder}/source/node_modules/.bin/electron.cmd"
-			},
-			"args": [
-				"."
-			]
 		}
 	]
 }
