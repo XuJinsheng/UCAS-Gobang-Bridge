@@ -119,7 +119,7 @@ def boardMakeMove(row, col, player):
 
 
 window = webview.create_window(
-    "Gobang Bridge",
+    "Gobang Bridge v1.0",
     "assets/index.html",
     js_api=Api(),
     width=1400,
