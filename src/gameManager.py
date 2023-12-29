@@ -138,10 +138,14 @@ class Game:
         self.onSetManualable = None  # onSetManualable(bool)
 
     def close(self):
+        threadPool.shutdown()
+        threadPool = ThreadPoolExecutor()
         if self.black:
             self.black.close()
+            self.black = None
         if self.white:
             self.white.close()
+            self.white = None
 
     def createManualPlayer(self, player):
         assert player == True and not self.black or player == False and not self.white
@@ -256,10 +260,10 @@ class ManualPlayer:
     def __init__(self, game, player):
         self.game = game
         self.player = player
-        
+
     def close(self):
         pass
-        
+
     def start(self):
         if self.player:
             self.game.onSetManualable(True)
@@ -298,6 +302,7 @@ class StdioPlayer:
 
     def close(self):
         self.process.kill()
+        self.process = None
 
     def getInfo(self):
         retcode = self.process.poll()
@@ -346,6 +351,7 @@ class StdioPlayer:
         threadPool.submit(self.readMove)
 
     def readMove(self):
+        sleep(0.2)
         while True:
             s = self.readlineStdout().strip()
             m = re.match(r"MOVE.*?(\d{1,2}),(\d{1,2})", s, re.I)

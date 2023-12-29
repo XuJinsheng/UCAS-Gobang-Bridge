@@ -35,6 +35,7 @@ class Api:
     def restartGame(self):
         global game
         game.close()
+        game = None
         start()
 
     def getForbiddenRule(self):
