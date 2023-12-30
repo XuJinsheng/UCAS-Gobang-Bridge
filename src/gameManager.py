@@ -138,6 +138,7 @@ class Game:
         self.onSetManualable = None  # onSetManualable(bool)
 
     def close(self):
+        global threadPool
         threadPool.shutdown()
         threadPool = ThreadPoolExecutor()
         if self.black:
