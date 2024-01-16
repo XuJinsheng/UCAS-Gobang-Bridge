@@ -38,6 +38,13 @@ class Api:
         game = None
         start()
 
+    def swapPlayer(self):
+        swap=args.black
+        args.black=args.white
+        args.white=swap
+        self.restartGame()
+            
+
     def getForbiddenRule(self):
         return args.forbidden
 

@@ -297,7 +297,6 @@ class StdioPlayer:
             cmd,
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
             shell=False,
         )
 
