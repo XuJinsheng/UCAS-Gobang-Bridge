@@ -20,7 +20,8 @@ int main()
 		col = col > 14 ? 1 : col + 1;
 
 		// 输出自己的下棋坐标
-		printf("MOVE(%d,%d)\n", row, col);
+		// printf("MOVE %d %d\n", row, col);
+		printf("MOVE %c%d\n", col + 'A' - 1, row);
 		fflush(stdout);
 	}
 	return 0;

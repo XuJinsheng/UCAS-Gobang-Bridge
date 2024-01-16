@@ -25,8 +25,16 @@ function chesscellclicked(div, row, col) {
 function coordinateclicked() {
 	let str = document.querySelector("#mannualcoordinateinput").value;
 	let m = /(\d{1,2}),(\d{1,2})/i.exec(str);
+	if (m == null) m = /([a-z])(\d{1,2})/i.exec(str);
 	if (m) {
-		let row = parseInt(m[1]), col = parseInt(m[2]);
+		let row = 0, col = 0;
+		if (m[1].toUpperCase() >= 'A') {
+			row = parseInt(m[2]);
+			col = m[1].toUpperCase().charCodeAt(0) - 64;
+		} else {
+			row = parseInt(m[1]);
+			col = parseInt(m[2]);
+		}
 		let div = getCellElement(row, col);
 		if (div.classList.contains("black") || div.classList.contains("white"))
 			window.alert("这里已经有棋子了！");

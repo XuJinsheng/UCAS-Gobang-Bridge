@@ -355,7 +355,15 @@ class StdioPlayer:
         while True:
             s = self.readlineStdout().strip()
             m = re.match(r"MOVE.*?(\d{1,2}),(\d{1,2})", s, re.I)
+            if m == None:
+                m = re.match(r"MOVE.*?([a-z])(\d{1,2})", s, re.I)
             if m:
-                self.game.makeMove(int(m.group(1)), int(m.group(2)), self.player)
+                if m.group(1).isalpha():
+                    col = ord(m.group(1).upper()) - ord("A") + 1
+                    row = int(m.group(2))
+                else:
+                    row = int(m.group(1))
+                    col = int(m.group(2))
+                self.game.makeMove(row, col, self.player)
                 return
             sleep(0.01)
