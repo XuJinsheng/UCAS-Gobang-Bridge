@@ -117,12 +117,10 @@ function chooseExeClicked(player, type) {
 }
 function restartclicked() {
 	pywebview.api.restartGame();
-	location.reload();
 }
 
 function swapclicked() {
 	pywebview.api.swapPlayer();
-	location.reload();
 }
 
 function savelogclicked() {

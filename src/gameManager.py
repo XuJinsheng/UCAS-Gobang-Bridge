@@ -139,14 +139,14 @@ class Game:
 
     def close(self):
         global threadPool
-        threadPool.shutdown()
-        threadPool = ThreadPoolExecutor()
         if self.black:
             self.black.close()
             self.black = None
         if self.white:
             self.white.close()
             self.white = None
+        threadPool.shutdown(wait=True, cancel_futures=True)
+        threadPool = ThreadPoolExecutor()
 
     def createManualPlayer(self, player):
         assert player == True and not self.black or player == False and not self.white
