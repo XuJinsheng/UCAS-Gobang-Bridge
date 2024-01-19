@@ -347,7 +347,8 @@ class StdioPlayer:
             threadPool.submit(self.readMove)
 
     def enemyMove(self, row, col):
-        self.writeStdin(b"MOVE(%d,%d)\n" % (row, col))
+        #self.writeStdin(b"MOVE(%d,%d)\n" % (row, col))
+        self.writeStdin(b"MOVE %c%d\n" % (ord("A") + col - 1, row))
         threadPool.submit(self.readMove)
 
     def readMove(self):
