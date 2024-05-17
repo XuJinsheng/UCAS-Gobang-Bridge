@@ -132,7 +132,6 @@ window = webview.create_window(
     js_api=Api(),
     width=1400,
     height=800,
-    resizable=False,
     fullscreen=False,
     frameless=False,
     confirm_close=True,
